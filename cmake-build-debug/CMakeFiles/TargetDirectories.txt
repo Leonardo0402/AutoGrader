@@ -1,0 +1,3 @@
+E:/ProgramProject/c_project/AutoMark/cmake-build-debug/CMakeFiles/AutoMark.dir
+E:/ProgramProject/c_project/AutoMark/cmake-build-debug/CMakeFiles/edit_cache.dir
+E:/ProgramProject/c_project/AutoMark/cmake-build-debug/CMakeFiles/rebuild_cache.dir
