@@ -49,8 +49,8 @@ void importAnswer(struct Answer answer[])
         char filename[100];
         printf("请输入文本文件名称(e.g. answer.txt): ");
         // 删除空格
-        fgets(filename, sizeof(filename),stdin); // stdin
-        filename[strcspn(filename, "\n")] = 0; // strcspn
+        fgets(filename, sizeof(filename),stdin); // stdin从键盘读取输入的数据
+        filename[strcspn(filename, "\n")] = 0; // strcspn去掉由fgets()带来的多余的空格符
 
         FILE *fp = fopen(filename, "r");
         if(fp == NULL)
@@ -58,7 +58,7 @@ void importAnswer(struct Answer answer[])
             printf("无法打开文件");
             exit(0);
         }
-        while(fscanf(fp, "%d %c", &answer[count].id, &answer[count].correct_option) == 2) //首先，txt的编写格式应该类似于“1 A”，数字和字母之间要有一个空格
+        while(fscanf(fp, "%d %c", &answer[count].id, &answer[count].correct_option) == 2) //首先，txt的编写格式应该类似于“1 A”，数字和字母之间要有一个空格，完整读取题号与答案返回2的时候，循环继续
         {
             count++;
             if(count > MAX_QUESTIONS)   break;
