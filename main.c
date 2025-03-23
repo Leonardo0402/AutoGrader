@@ -68,7 +68,7 @@ void importAnswer(struct Answer answer[])
     }
     else if(mode == 2)
     {
-        printf("请手动输入每一题的答案(输入0停止)\n");
+        printf("请手动输入标准答案(输入0停止)\n");
         while(1)
         {
             if(count >= MAX_QUESTIONS)
@@ -77,7 +77,7 @@ void importAnswer(struct Answer answer[])
                 break;
             }
 
-            printf("请输入题的题号：");
+            printf("请输入每题题号：");
             scanf("%d", &answer[count].id);
             if(answer[count].id == 0)    break;
             printf("请输入正确的答案(A/B/C/D)：");
@@ -109,9 +109,75 @@ void importAnswer(struct Answer answer[])
     }
 }
 
-void importStuAnswer()
+void importStuAnswer(struct Answer answer[])
 {
+    int mode;
+    int count = 0;
+    printf(">>>>> 1. 从TXT文件中导入答案\n");
+    printf(">>>>> 2. 手动输入答案\n");
+    printf("请选择：");
+    scanf("%d", &mode);
+    while(getchar() != '\0')
+    if(mode == 1)
+    {
+        char filename[100];
+        printf("请输入要导入的文本文件：(e.g. answer.txt)");
+        fgets(filename, sizeof(filename) , stdin);
+        filename[strcspn(filename, '\0')] = 0;
+        FILE *fp = fopen(filename, "r");
+        if(fp == NULL)
+        {
+            printf("无法打开文件");
+            exit(0);
+        }
 
+        while(fscanf(fp, "%d %c", &answer[count].id, &answer[count].correct_option) == 2)
+        {
+            count++;
+            if(count > MAX_QUESTIONS)    break;
+        }
+        fclose(fp);
+        printf(">>>>> 已经有 %d 个答案从 %s 文件中导入进来", count, filename);
+    }
+    else if(mode == 2)
+    {
+        printf("请手动输入学生的答案(输入0停止): \n");
+        while(1)
+        {
+            if(count > MAX_QUESTIONS)
+            {
+                printf("已经超过了最大的录入数量！\n");
+                break;
+            }
+            printf("请输入每题题号：");
+            scanf("%d", &answer[count].id);
+            if(answer[count].id == 0)    break;
+            printf("请输入每题答案(A/B/C/D)：");
+            scanf("%c", &answer[count].correct_option);
+            count++;
+
+            char confirm;
+            printf("是否输入完整答案(Y/N): ");
+            scanf(" %c", &confirm);
+
+            if(confirm == 'Y' || confirm == 'y')
+            {
+                printf("已输入的学生答案如下：\n");
+                for(int i = 0; i < count; i++)
+                {
+                    printf("题号：%d --> 正确答案是：%c\n", answer[i].id, answer[i].correct_option);
+                }
+            }
+            else
+            {
+                printf("请继续输入答案！");
+            }
+        }
+    }
+    else
+    {
+        printf("Invalid Choice");
+    }
 }
 
 int main()
@@ -126,6 +192,7 @@ int main()
             importAnswer(answer);
             break;
         case 2:
+            importStuAnswer(answer);
             break;
         case 3:
             break;
@@ -133,9 +200,6 @@ int main()
             break;
     }
 
-
-
-    importStuAnswer();
     // 开始阅卷
     system("pause");
     return 0;
