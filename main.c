@@ -121,9 +121,9 @@ void importStuAnswer(struct Answer answer[])
     if(mode == 1)
     {
         char filename[100];
-        printf("请输入要导入的文本文件：(e.g. answer.txt)");
+        printf("请输入要导入的文本文件：(e.g. answer.txt): ");
         fgets(filename, sizeof(filename) , stdin);
-        filename[strcspn(filename, '\0')] = 0;
+        filename[strcspn(filename, "\n")] = 0;
         FILE *fp = fopen(filename, "r");
         if(fp == NULL)
         {
@@ -144,7 +144,7 @@ void importStuAnswer(struct Answer answer[])
         printf("请手动输入学生的答案(输入0停止): \n");
         while(1)
         {
-            if(count > MAX_QUESTIONS)
+            if(count >= MAX_QUESTIONS)
             {
                 printf("已经超过了最大的录入数量！\n");
                 break;
