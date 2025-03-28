@@ -25,7 +25,7 @@ void display()
     printf("|                                      |\n");
     printf("|      Automatically Grade Exams       |\n");
     printf("|                                      |\n");
-    printf("|      Author: GWW | v1.0      |\n");
+    printf("|      Author: GWW | v1.5      |\n");
     printf("+--------------------------------------+\n\n");
     printf("请选择下面选项: \n");
     printf("----- 1.导入标准答案 -----\n");
@@ -38,7 +38,7 @@ void display()
 int importAnswer(struct Answer answer[])
 {
     int mode ;
-    int count = 0;
+    int count = 0 ;
     printf(">>>>>>> 1. 从TXT文件中导入答案\n");
     printf(">>>>>>> 2. 手动输入答案\n");
     printf("请选择：");
