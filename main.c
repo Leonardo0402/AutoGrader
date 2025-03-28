@@ -253,15 +253,6 @@ int main()
     printf(">>>>> 3. 现在开始自动判卷 \n");
     autoGrade(answer, standard_count, stuAnswer , student_count);
 
-
-    display();
-    printf(">>>>> 1. 现在导入标准答案 \n");
-    standard_count = importAnswer(answer);
-    printf(">>>>> 2. 现在导入学生答案 \n");
-    student_count = importStuAnswer(stuAnswer);
-    printf(">>>>> 3. 现在开始自动判卷 \n");
-    autoGrade(answer, standard_count, stuAnswer , student_count);
-
     system("pause");
     return 0;
 }
