@@ -51,6 +51,7 @@
 463	735	7644123944356675	AutoMark.exe	8fa11a6d9e31add8
 1	69	7644126024855465	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
 70	138	7644126025508757	AutoMark.exe	8fa11a6d9e31add8
+<<<<<<< HEAD
 0	253	7644166732202191	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
 253	387	7644166733479282	AutoMark.exe	8fa11a6d9e31add8
 1	74	7644167192437556	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
@@ -67,3 +68,23 @@
 259	367	7644175940698369	AutoMark.exe	8fa11a6d9e31add8
 1	287	7644232700603593	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
 287	405	7644232701744559	AutoMark.exe	8fa11a6d9e31add8
+=======
+1	279	7648303810224324	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+280	469	7648303812080750	AutoMark.exe	8fa11a6d9e31add8
+1	78	7648304459715152	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+79	156	7648304460423312	AutoMark.exe	8fa11a6d9e31add8
+1	85	7648305609904104	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+85	160	7648305610611761	AutoMark.exe	8fa11a6d9e31add8
+1	78	7648310622796126	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+78	151	7648310623453700	AutoMark.exe	8fa11a6d9e31add8
+1	73	7648310765325920	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+73	139	7648310765925109	AutoMark.exe	8fa11a6d9e31add8
+2	74	7648315053579086	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+75	146	7648315054216642	AutoMark.exe	8fa11a6d9e31add8
+1	79	7648323897105883	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+79	145	7648323897728801	AutoMark.exe	8fa11a6d9e31add8
+1	74	7648325530213983	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+74	149	7648325530912781	AutoMark.exe	8fa11a6d9e31add8
+>>>>>>> dev
+0	72	7648339788242888	CMakeFiles/AutoMark.dir/main.c.obj	c2752fd684cfe567
+73	146	7648339788926414	AutoMark.exe	8fa11a6d9e31add8
