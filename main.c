@@ -38,7 +38,9 @@ void display()
 int importAnswer(struct Answer answer[])
 {
     int mode ;
+
     int count = 0 ;
+
     printf(">>>>>>> 1. 从TXT文件中导入答案\n");
     printf(">>>>>>> 2. 手动输入答案\n");
     printf("请选择：");
@@ -58,10 +60,22 @@ int importAnswer(struct Answer answer[])
             printf("无法打开文件");
             exit(0);
         }
-        while(fscanf(fp, "%d %c", &answer[count].id, &answer[count].correct_option) == 2) //首先，txt的编写格式应该类似于“1 A”，数字和字母之间要有一个空格，完整读取题号与答案返回2的时候，循环继续
-        {
-            count++;
-            if(count > MAX_QUESTIONS)   break;
+        int id;
+        char opt;
+        while (!feof(fp)) {
+            int result = fscanf(fp, "%d %c", &id, &opt);
+            if (result == 2) {
+                if (count >= MAX_QUESTIONS) {
+                    printf("达到最大数量，停止读取\n");
+                    break;
+                }
+                answer[count].id = id;
+                answer[count].correct_option = opt;
+                count++;
+            } else {
+                // 避免 fscanf 死循环，跳过一整行
+                fscanf(fp, "%*[^\n]\n");
+            }
         }
         fclose(fp);
         printf(">>>>> 有 %d 个答案已经从 %s 文件中导入进来\n", count, filename);
@@ -85,28 +99,29 @@ int importAnswer(struct Answer answer[])
             count++;
             if(count > MAX_QUESTIONS)    break;
             printf(">>>>> 有 %d 个答案已经输入进来\n", count);
+        }
 
-            char confirm;
-            printf("是否已经完整的输入答案：(Y/N)\n");
-            scanf(" %c", &confirm);
-            if(confirm == 'Y' || confirm == 'y')
+        char confirm;
+        printf("是否已经完整的输入答案：(Y/N)\n");
+        scanf(" %c", &confirm);
+        if(confirm == 'Y' || confirm == 'y')
+        {
+            printf("已输入的答案如下：\n");
+            for(int i = 0; i < count; i++)
             {
-                printf("已输入的答案如下：\n");
-                for(int i = 0; i < count; i++)
-                {
-                    printf("题号：%d --> 正确答案是：%c\n", answer[i].id, answer[i].correct_option);
-                }
+                printf("题号：%d --> 正确答案是：%c\n", answer[i].id, answer[i].correct_option);
             }
-            else
-            {
-                printf("请继续完善答案后再确认。\n");
-            }
+        }
+        else
+        {
+            printf("请继续完善答案后再确认。\n");
         }
     }
     else
     {
         printf("Invalid Choice");
     }
+    return count;
 }
 
 int importStuAnswer(struct Answer stuAnswer[])
@@ -131,11 +146,22 @@ int importStuAnswer(struct Answer stuAnswer[])
             printf("无法打开文件");
             exit(0);
         }
-
-        while(fscanf(fp, "%d %c", &stuAnswer[count].id, &stuAnswer[count].correct_option) == 2)
-        {
-            count++;
-            if(count > MAX_QUESTIONS)    break;
+        int id;
+        char opt;
+        while (!feof(fp)) {
+            int result = fscanf(fp, "%d %c", &id, &opt);
+            if (result == 2) {
+                if (count >= MAX_QUESTIONS) {
+                    printf("已达到最大录入数量，停止读取\n");
+                    break;
+                }
+                stuAnswer[count].id = id;
+                stuAnswer[count].correct_option = opt;
+                count++;
+            } else {
+                // 跳过当前无效行避免死循环
+                fscanf(fp, "%*[^\n]\n");
+            }
         }
         fclose(fp);
         printf(">>>>> 已经有 %d 个答案从 %s 文件中导入进来\n", count, filename);
@@ -156,12 +182,15 @@ int importStuAnswer(struct Answer stuAnswer[])
             printf("请输入每题答案(A/B/C/D)：");
             scanf(" %c", &stuAnswer[count].correct_option);
             count++;
+        }
+        char confirm;
+        printf("是否输入完整答案(Y/N): ");
+        scanf(" %c", &confirm);
 
-            char confirm;
-            printf("是否输入完整答案(Y/N): ");
-            scanf(" %c", &confirm);
-
-            if(confirm == 'Y' || confirm == 'y')
+        if(confirm == 'Y' || confirm == 'y')
+        {
+            printf("已输入的学生答案如下：\n");
+            for(int i = 0; i < count; i++)
             {
                 printf("已输入的学生答案如下：\n");
                 for(int i = 0; i < count; i++)
@@ -169,19 +198,20 @@ int importStuAnswer(struct Answer stuAnswer[])
                     printf("题号：%d --> 正确答案是：%c\n", stuAnswer[i].id, stuAnswer[i].correct_option);
                 }
             }
-            else
-            {
-                printf("请继续输入答案！");
-            }
+        }
+        else
+        {
+            printf("请继续输入答案！");
         }
     }
     else
     {
         printf("Invalid Choice");
     }
+    return count;
 }
 
-void autoGrade(struct Answer standard[], int standard_count, struct Answer student[], int student_count)
+int autoGrade(struct Answer standard[], int standard_count, struct Answer student[], int student_count)
 {
     int total = standard_count;
     int correct = 0;
@@ -202,14 +232,16 @@ void autoGrade(struct Answer standard[], int standard_count, struct Answer stude
             }
         }
     }
-    printf("共 %d 条题目，答对 %d 条题目，正确率：%.2f%%\n", total, correct, (correct * 100) / total);// bug
+
+    printf("共 %d 条题目，答对 %d 条题目，正确率：%.2f%%\n",total, correct, (correct * 100.0) / total);
+
+    return correct;
 }
 
 int main()
 {
     struct Answer answer[MAX_QUESTIONS];
     struct Answer stuAnswer[MAX_QUESTIONS];
-    int choice ;
     int standard_count = 0;
     int student_count = 0;
 
@@ -217,25 +249,19 @@ int main()
     printf(">>>>> 1. 现在导入标准答案 \n");
     standard_count = importAnswer(answer);
     printf(">>>>> 2. 现在导入学生答案 \n");
-    student_count = importStuAnswer(answer);
+    student_count = importStuAnswer(stuAnswer);
     printf(">>>>> 3. 现在开始自动判卷 \n");
     autoGrade(answer, standard_count, stuAnswer , student_count);
-//    scanf("%d", &choice);
-//    switch(choice)
-//    {
-//        case 1:
-//            importAnswer(answer);
-//            break;
-//        case 2:
-//            importStuAnswer(answer);
-//            break;
-//        case 3:
-//            // 开始阅卷
-//
-//            break;
-//        default:
-//            break;
-//    }
+
+
+    display();
+    printf(">>>>> 1. 现在导入标准答案 \n");
+    standard_count = importAnswer(answer);
+    printf(">>>>> 2. 现在导入学生答案 \n");
+    student_count = importStuAnswer(stuAnswer);
+    printf(">>>>> 3. 现在开始自动判卷 \n");
+    autoGrade(answer, standard_count, stuAnswer , student_count);
+
     system("pause");
     return 0;
 }
